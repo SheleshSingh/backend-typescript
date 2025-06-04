@@ -4,6 +4,6 @@ const _config = {
   port: process.env.PORT || 3000,
   databaseUrl: process.env.MONGO_URL,
   env: process.env.NODE_ENV,
-  jwtScret: process.env.JWT_SECRET,
+  jwtSecret: process.env.JWT_SECRET,
 };
 export const config = Object.freeze(_config);

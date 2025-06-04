@@ -18,3 +18,16 @@ export const createUser = async (data: UserData) => {
   });
   return { accessToken: token };
 };
+
+export const loginUser = async (data: UserData) => {
+  const user = await userModel.findOne({ email: data.email });
+  if (!user) throw new Error("User not found");
+  const isPasswordValid = await bcrypt.compare(data.password, user.password);
+  if (!isPasswordValid) throw new Error("Invalid password");
+
+  // Token generation using JWT
+  const token = sign({ sub: user._id }, config.jwtSecret as string, {
+    expiresIn: "7d",
+  });
+  return { accessToken: token };
+};

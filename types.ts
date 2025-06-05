@@ -12,12 +12,5 @@ export interface BookData {
   author: Types.ObjectId;
   genre: string;
   coverImage: Express.Multer.File | string;
-    file: Express.Multer.File | string;
+  file: Express.Multer.File | string;
 }
-// export interface BookData {
-//   title: string;
-//   author: Types.ObjectId | string;
-//   genre: string;
-//   coverImage: Express.Multer.File | string;
-//   file: Express.Multer.File | string;
-// }

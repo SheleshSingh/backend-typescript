@@ -5,5 +5,5 @@ const uploadPath = path.join(__dirname, "../../public/data/uploads");
 
 export const upload = multer({
   dest: uploadPath,
-  limits: { fileSize: 30 * 1024 * 1024 }, // 30 MB
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB
 });

@@ -45,7 +45,7 @@ export const createBook = async (data: BookData) => {
 
     await fs.unlink(filePath);
     await fs.unlink(bookFilePath);
-
+  
     const newBook = await bookModel.create({
       ...data,
       coverImage: coverUploadResult.secure_url,

@@ -89,15 +89,14 @@ export const updateBookHandler = async (bookId: string, data: BookData) => {
 };
 
 export const getAllBooks = async () => {
-  try {
-    const books = await bookModel.find();
-    if (!books || books.length === 0)
-      throw createHttpError(404, "No books found");
-    return books;
-  } catch (error) {
-    throw createHttpError(500, "Internal Server Error", { cause: error });
-  }
+  const books = await bookModel.find();
+  if (!books || books.length === 0)
+    throw createHttpError(404, "No books found");
+  return books;
 };
-export function listBooks() {
-  throw new Error("Function not implemented.");
-}
+
+export const getSingleBook = async (data: BookData) => {
+  const book = await bookModel.findOne({ _id: data.id });
+  if (!book) throw createHttpError(404, "Book not found");
+  return book;
+};

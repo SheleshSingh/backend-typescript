@@ -3,6 +3,7 @@ import {
   createBookHandler,
   listBooksHandler,
   updateBookHandler,
+  getSingleBookHandler,
 } from "../controllers/bookController";
 import { upload } from "../middlewares/multer";
 import authenticate from "../middlewares/authenticate";
@@ -28,5 +29,6 @@ bookRouter.put(
   updateBookHandler
 );
 bookRouter.get("/", listBooksHandler);
+bookRouter.get("/:bookId", getSingleBookHandler);
 
 export default bookRouter;

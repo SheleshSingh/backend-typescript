@@ -112,4 +112,27 @@ const listBooksHandler = async (
   }
 };
 
-export { createBookHandler, updateBookHandler, listBooksHandler };
+const getSingleBookHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const book = await bookService.getSingleBook({ id: req.params.bookId });
+    res.status(200).json(book);
+  } catch (error: unknown) {
+    console.error("Get Single Book Error:", error);
+    if (error instanceof Error) {
+      return next(createHttpError(409, error.message));
+    } else {
+      return next(createHttpError(500, "Internal Server Error"));
+    }
+  }
+};
+
+export {
+  createBookHandler,
+  listBooksHandler,
+  updateBookHandler,
+  getSingleBookHandler,
+};

@@ -6,11 +6,11 @@ export interface UserData {
   email: string;
   password: string;
 }
-export interface BookData {
-  id: string;
-  title: string;
-  author: Types.ObjectId;
-  genre: string;
-  coverImage: Express.Multer.File | string;
-  file: Express.Multer.File | string;
-}
+export type BookData = {
+  id?: string;
+  title?: string;
+  author?: Types.ObjectId;
+  genre?: string;
+  coverImage?: Express.Multer.File | string;
+  file?: Express.Multer.File | string;
+};

@@ -45,7 +45,7 @@ export const createBook = async (data: BookData) => {
 
     await fs.unlink(filePath);
     await fs.unlink(bookFilePath);
-  
+
     const newBook = await bookModel.create({
       ...data,
       coverImage: coverUploadResult.secure_url,
@@ -58,3 +58,46 @@ export const createBook = async (data: BookData) => {
     });
   }
 };
+
+export const updateBookHandler = async (bookId: string, data: BookData) => {
+  const book = await bookModel.findOne({ _id: bookId });
+  if (!book) throw createHttpError(404, "Book not found");
+
+  if (!data.author || !book.author)
+    throw createHttpError(400, "Author information is required");
+
+  if (data.author.toString() !== book.author.toString()) {
+    throw createHttpError(403, "You are not authorized to update this book");
+  }
+  const coverImageFile = data.coverImage as Express.Multer.File;
+  const contentFile = data.file as Express.Multer.File;
+  if (!coverImageFile && !contentFile) {
+    throw createHttpError(400, "No files provided for update");
+  }
+
+  const updateData: Partial<BookData> = {};
+  if (coverImageFile) {
+    updateData.coverImage = coverImageFile;
+  }
+  if (contentFile) {
+    updateData.file = contentFile;
+  }
+
+  await bookModel.updateOne({ _id: bookId }, { $set: updateData });
+  const updatedBook = await bookModel.findOne({ _id: bookId });
+  return updatedBook;
+};
+
+export const getAllBooks = async () => {
+  try {
+    const books = await bookModel.find();
+    if (!books || books.length === 0)
+      throw createHttpError(404, "No books found");
+    return books;
+  } catch (error) {
+    throw createHttpError(500, "Internal Server Error", { cause: error });
+  }
+};
+export function listBooks() {
+  throw new Error("Function not implemented.");
+}

@@ -98,5 +98,34 @@ export const getAllBooks = async () => {
 export const getSingleBook = async (data: BookData) => {
   const book = await bookModel.findOne({ _id: data.id });
   if (!book) throw createHttpError(404, "Book not found");
+
+  return book;
+};
+export const deleteBook = async (data: BookData) => {
+  const book = await bookModel.findOne({ _id: data.id });
+  if (!book) throw createHttpError(404, "Book not found");
+  if (!book.coverImage) {
+    throw createHttpError(400, "Book cover image is missing");
+  }
+  const coverImageStr =
+    typeof book.coverImage === "string" ? book.coverImage : "";
+  const coverFileSplits = coverImageStr.split("/");
+  const coverImagePublicId =
+    (coverFileSplits.at(-2) ?? "") +
+    "/" +
+    (coverFileSplits.at(-1)?.split(".").at(-2) ?? "");
+  const bookFileSplits =
+    typeof book.file === "string" ? book.file.split("/") : [];
+  const bookFilePublicId =
+    (bookFileSplits.at(-2) ?? "") +
+    "/" +
+    (bookFileSplits.at(-1)?.split(".").at(-1) ?? "");
+  await cloudinary.uploader.destroy(coverImagePublicId, {
+    resource_type: "image",
+  });
+  await cloudinary.uploader.destroy(bookFilePublicId, {
+    resource_type: "raw",
+  });
+  await bookModel.deleteOne({ _id: data.id });
   return book;
 };

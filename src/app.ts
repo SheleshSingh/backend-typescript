@@ -1,25 +1,17 @@
-// import express, { Request, Response } from "express";
-// import globalErrorHandler from "./middlewares/globalErrorHandler";
-// import userRouter from "./routers/userRouter";
-// import bookRouter from "./routers/bookRouter";
-// const app = express();
-// app.use(express.json());
-// app.get("/", (req: Request, res: Response) => {
-//   res.json({ message: "Hello World!" });
-// });
-
-// app.use("/api/users", userRouter);
-// app.use("/api/books", bookRouter);
-// app.use(globalErrorHandler);
-// export default app;
-
 import express from "express";
 import globalErrorHandler from "./middlewares/globalErrorHandler";
 import bookRouter from "./routers/bookRouter";
 import userRouter from "./routers/userRouter";
+import cors from "cors";
+import { config } from "./config/config";
 
 const app = express();
-
+app.use(
+  cors({
+    origin: config.frontentDomain,
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

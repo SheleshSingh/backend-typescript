@@ -129,10 +129,28 @@ const getSingleBookHandler = async (
     }
   }
 };
+const deleteBookHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const bookId = await bookService.deleteBook({ id: req.params.bookId });
+    res.status(200).json({ message: "Book deleted successfully", bookId });
+  } catch (error) {
+    console.error("Delete Book Error:", error);
+    if (error instanceof Error) {
+      return next(createHttpError(409, error.message));
+    } else {
+      return next(createHttpError(500, "Internal Server Error"));
+    }
+  }
+};
 
 export {
   createBookHandler,
   listBooksHandler,
   updateBookHandler,
   getSingleBookHandler,
+  deleteBookHandler,
 };

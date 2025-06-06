@@ -4,6 +4,7 @@ import {
   listBooksHandler,
   updateBookHandler,
   getSingleBookHandler,
+  deleteBookHandler,
 } from "../controllers/bookController";
 import { upload } from "../middlewares/multer";
 import authenticate from "../middlewares/authenticate";
@@ -30,5 +31,6 @@ bookRouter.put(
 );
 bookRouter.get("/", listBooksHandler);
 bookRouter.get("/:bookId", getSingleBookHandler);
+bookRouter.delete("/:bookId", authenticate, deleteBookHandler);
 
 export default bookRouter;
